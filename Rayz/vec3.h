@@ -45,11 +45,11 @@ class vec3 {
         }
     
         static vec3 random() {
-            return vec3(random_float(), random_float(), random_float());
+            return vec3(randFloat(), randFloat(), randFloat());
         }
 
         static vec3 random(float min, float max) {
-            return vec3(random_float(min,max), random_float(min,max), random_float(min,max));
+            return vec3(randFloat(min,max), randFloat(min,max), randFloat(min,max));
         }
 
         bool near_zero() const {
@@ -133,7 +133,7 @@ inline vec3 random_in_hemisphere(const vec3& normal) {
 
 inline vec3 random_in_unit_disk() {
     while (true) {
-        auto p = vec3(random_float(-1,1), random_float(-1,1), 0);
+        auto p = vec3(randFloat(-1,1), randFloat(-1,1), 0);
         if (p.length_squared() >= 1) continue;
         return p;
     }
