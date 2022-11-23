@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "hittable.h"
+#include "intersect.h"
 #include "vec3.h"
 
 class sphere : public hittable {
@@ -9,6 +10,7 @@ public:
     sphere(point3 cen, float r, shared_ptr<material> m) : center(cen), radius(r), matPtr(m) {}
 
     virtual bool hit(const ray& r, float t_min, float t_max, hitRecord& rec) const override;
+    virtual bool boundingBox(float time0, float time1, aabb& outputBox) const override;
 
 public:
     point3 center;
@@ -40,5 +42,10 @@ inline bool sphere::hit(const ray& r, float t_min, float t_max, hitRecord& rec) 
     rec.set_face_normal(r, outwardNormal);
     rec.matPtr = matPtr;
     
+    return true;
+}
+
+bool sphere::boundingBox(float time0, float time1, aabb& outputBox) const {
+    outputBox = aabb(center - vec3(radius, radius, radius), center + vec3(radius, radius, radius));
     return true;
 }

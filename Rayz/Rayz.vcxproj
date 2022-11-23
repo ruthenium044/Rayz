@@ -142,9 +142,11 @@
     <ClCompile Include="Rayz.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bvh.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="color.h" />
     <ClInclude Include="hittable.h" />
+    <ClInclude Include="intersect.h" />
     <ClInclude Include="material.h" />
     <ClInclude Include="movingSphere.h" />
     <ClInclude Include="ray.h" />

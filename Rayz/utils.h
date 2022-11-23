@@ -29,7 +29,12 @@ inline float randFloat() {
 
 inline float randFloat(float min, float max) {
     // Returns a random real in [min,max).
-    return min + (max-min)*randFloat();
+    return min + (max-min) * randFloat();
+}
+
+inline int randInt(int min, int max) {
+    // Returns a random integer in [min,max].
+    return static_cast<int>(randFloat(min, max+1));
 }
 
 inline float clamp(float x, float min, float max) {

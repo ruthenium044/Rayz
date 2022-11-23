@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "hittable.h"
+#include "intersect.h"
 
 #include "vec3.h"
 
@@ -10,7 +11,8 @@ public:
             : center0(cen0), center1(cen1), time0(tm0), time1(tm1), radius(r), matPtr(m) {}
 
     virtual bool hit(const ray& r, float tMin, float tMax, hitRecord& rec) const override;
-
+    virtual bool boundingBox(float time0, float time1, aabb& outputBox) const override;
+    
     point3 center(float t) const;
 
 public:
@@ -50,5 +52,12 @@ inline bool movingSphere::hit(const ray& r, float tMin, float tMax, hitRecord& r
     rec.set_face_normal(r, outward_normal);
     rec.matPtr = matPtr;
     
+    return true;
+}
+
+inline bool movingSphere::boundingBox(float time0, float time1, aabb& outputBox) const {
+    aabb box0(center(time0) - vec3(radius, radius, radius), center(time0) + vec3(radius, radius, radius));
+    aabb box1(center(time1) - vec3(radius, radius, radius), center(time1) + vec3(radius, radius, radius));
+    outputBox = surroundingBox(box0, box1);
     return true;
 }

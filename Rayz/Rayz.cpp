@@ -1,5 +1,4 @@
-// Rayz.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+//refs
 //https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
 #include "utils.h"
@@ -9,22 +8,25 @@
 #include "hittableList.h"
 #include "sphere.h"
 #include "material.h"
+#include "movingSphere.h"
 
 #include <iostream>
 #include <sstream>
 
-#include "movingSphere.h"
 
 hittableList randomScene() {
+    // initialize random seed:
+    srand (time(nullptr));
+    
     hittableList world;
 
-    auto groundMaterial = make_shared<lambertian>(color(0.5, 0.5, 0.5));
+    auto groundMaterial = make_shared<lambertian>(color(0.2f, 0.2f, 0.2f));
     world.add(make_shared<sphere>(point3(0,-1000,0), 1000, groundMaterial));
 
     for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
             auto chooseMat = randFloat();
-            point3 center(a + 0.9f*randFloat(), 0.2f, b + 0.9f*randFloat());
+            point3 center(a + 0.9f * randFloat(), 0.2f, b + 0.9f * randFloat());
 
             if ((center - point3(4, 0.2f, 0)).length() > 0.9f) {
                 shared_ptr<material> sphereMaterial;
@@ -34,8 +36,7 @@ hittableList randomScene() {
                     auto albedo = color::random() * color::random();
                     sphereMaterial = make_shared<lambertian>(albedo);
                     auto center2 = center + vec3(0, randFloat(0,.5), 0);
-                    world.add(make_shared<movingSphere>(
-                        center, center2, 0.0, 1.0, 0.2, sphereMaterial));
+                    world.add(make_shared<movingSphere>(center, center2, 0.0, 1.0, 0.2, sphereMaterial));
                 
                 } else if (chooseMat < 0.95f) {
                     // metal
@@ -51,16 +52,13 @@ hittableList randomScene() {
             }
         }
     }
-
     auto material1 = make_shared<dielectric>(1.5);
-    world.add(make_shared<sphere>(point3(0, 1, 0), 1.0, material1));
+    auto material2 = make_shared<lambertian>(color(0.4f, 0.7f, 0.1f));
+    auto material3 = make_shared<metal>(color(0.7f, 0.6f, 0.5f), 0.0);
 
-    auto material2 = make_shared<lambertian>(color(0.4, 0.2, 0.1));
-    world.add(make_shared<sphere>(point3(-4, 1, 0), 1.0, material2));
-
-    auto material3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.0);
-    world.add(make_shared<sphere>(point3(4, 1, 0), 1.0, material3));
-
+    world.add(make_shared<sphere>(point3(4, 1.0f, 0.5f), 1.0, material1));
+    world.add(make_shared<sphere>(point3(2, 1.0f, -1.5f), 1.0, material2));
+    world.add(make_shared<sphere>(point3(0, 1.0f, 2.5f), 1.0, material3));
     return world;
 }
 
@@ -79,7 +77,7 @@ color rayColor(const ray& r, const hittable& world, int depth) {
     }
     vec3 unit_direction = unit_vector(r.direction());
     float t = 0.5f * (unit_direction.y() + 1.0f);
-    return (1.0f - t) * color(1.0f, 1.0f, 1.0f) + t * color(0.4f, 0.7f, 1.0f);
+    return (1.0f - t) * color(1.0f, 1.0f, 1.0f) + t * color(1.0f, 1.0f, 0.6f);
 }
 
 int main()
