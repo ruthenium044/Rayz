@@ -10,10 +10,12 @@ struct hitRecord {
     vec3 normal;
     shared_ptr<material> matPtr;
     float t;
+    float u;
+    float v;
 
     bool frontFace;
 
-    inline void set_face_normal(const ray& r, const vec3& outward_normal) {
+    inline void setFaceNormal(const ray& r, const vec3& outward_normal) {
         frontFace = dot(r.direction(), outward_normal) < 0;
         normal = frontFace ? outward_normal :-outward_normal;
     }

@@ -49,7 +49,7 @@ inline bool movingSphere::hit(const ray& r, float tMin, float tMax, hitRecord& r
     rec.t = root;
     rec.p = r.at(rec.t);
     auto outward_normal = (rec.p - center(r.time())) / radius;
-    rec.set_face_normal(r, outward_normal);
+    rec.setFaceNormal(r, outward_normal);
     rec.matPtr = matPtr;
     
     return true;

@@ -5,6 +5,8 @@
 #include <memory>
 #include <vector>
 
+#include "intersect.h"
+
 using namespace std;
 
 class hittableList : public hittable {
@@ -16,8 +18,8 @@ class hittableList : public hittable {
         void add(shared_ptr<hittable> object) { objects.push_back(object); }
 
         virtual bool hit( const ray& r, float t_min, float t_max, hitRecord& rec) const override;
+        virtual bool boundingBox(float time0, float time1, aabb& outputBox) const override;
 
-    public:
         std::vector<shared_ptr<hittable>> objects;
 };
 
@@ -35,4 +37,19 @@ inline bool hittableList::hit(const ray& r, float t_min, float t_max, hitRecord&
     }
 
     return hit_anything;
+}
+
+bool hittableList::boundingBox(float time0, float time1, aabb& outputBox) const {
+    if (objects.empty()) return false;
+
+    aabb temp_box;
+    bool first_box = true;
+
+    for (const auto& object : objects) {
+        if (!object->boundingBox(time0, time1, temp_box)) return false;
+        outputBox = first_box ? temp_box : surroundingBox(outputBox, temp_box);
+        first_box = false;
+    }
+
+    return true;
 }

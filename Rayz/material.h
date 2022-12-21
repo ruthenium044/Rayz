@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "hittable.h"
 #include "ray.h"
+#include "texture.h"
 
 struct hitRecord;
 
@@ -12,22 +13,22 @@ public:
 
 class lambertian : public material {
 public:
-    lambertian(const color& a) : albedo(a) {}
+    lambertian(const color& a) : albedo(make_shared<solidColor>(a)) {}
+    lambertian(shared_ptr<texture> a) : albedo(a) {}
+
 
     virtual bool scatter(const ray& rIn, const hitRecord& rec, color& attenuation, ray& scattered) const override {
         auto scatterDirection = rec.normal + random_unit_vector();
-
-        // Catch degenerate scatter direction
+        
         if (scatterDirection.near_zero())
             scatterDirection = rec.normal;
         
         scattered = ray(rec.p, scatterDirection, rIn.time());
-        attenuation = albedo;
+        attenuation = albedo->value(rec.u, rec.v, rec.p);
         return true;
     }
 
-public:
-    color albedo;
+    shared_ptr<texture> albedo;
 };
 
 class metal : public material {

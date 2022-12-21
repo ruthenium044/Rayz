@@ -11,11 +11,26 @@ public:
 
     virtual bool hit(const ray& r, float t_min, float t_max, hitRecord& rec) const override;
     virtual bool boundingBox(float time0, float time1, aabb& outputBox) const override;
-
-public:
+    
     point3 center;
     float radius{};
     shared_ptr<material> matPtr;
+
+private:
+    static void getSphereUV(const point3& p, float& u, float& v) {
+        // p: a given point on the sphere of radius one, centered at the origin.
+        // u: returned value [0,1] of angle around the Y axis from X=-1.
+        // v: returned value [0,1] of angle from Y=-1 to Y=+1.
+        //     <1 0 0> yields <0.50 0.50>       <-1  0  0> yields <0.00 0.50>
+        //     <0 1 0> yields <0.50 1.00>       < 0 -1  0> yields <0.50 0.00>
+        //     <0 0 1> yields <0.25 0.50>       < 0  0 -1> yields <0.75 0.50>
+
+        auto theta = acos(-p.y());
+        auto phi = atan2(-p.z(), p.x()) + pi;
+
+        u = phi / (2*pi);
+        v = theta / pi;
+    }
 };
 
 inline bool sphere::hit(const ray& r, float t_min, float t_max, hitRecord& rec) const {
@@ -39,7 +54,8 @@ inline bool sphere::hit(const ray& r, float t_min, float t_max, hitRecord& rec) 
     rec.t = root;
     rec.p = r.at(rec.t);
     vec3 outwardNormal = (rec.p - center) / radius;
-    rec.set_face_normal(r, outwardNormal);
+    rec.setFaceNormal(r, outwardNormal);
+    getSphereUV(outwardNormal, rec.u, rec.v);
     rec.matPtr = matPtr;
     
     return true;

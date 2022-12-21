@@ -19,9 +19,12 @@ hittableList randomScene() {
     srand (time(nullptr));
     
     hittableList world;
+    
+    auto checker = make_shared<checkerTexture>(color(0.2f, 0.3f, 0.1f), color(0.9f, 0.9f, 0.9f));
+    world.add(make_shared<sphere>(point3(0,-1000,0), 1000, make_shared<lambertian>(checker)));
 
-    auto groundMaterial = make_shared<lambertian>(color(0.2f, 0.2f, 0.2f));
-    world.add(make_shared<sphere>(point3(0,-1000,0), 1000, groundMaterial));
+    //auto groundMaterial = make_shared<lambertian>(color(0.2f, 0.2f, 0.2f));
+    //world.add(make_shared<sphere>(point3(0,-1000,0), 1000, groundMaterial));
 
     for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
@@ -52,13 +55,22 @@ hittableList randomScene() {
             }
         }
     }
+    
     auto material1 = make_shared<dielectric>(1.5);
     auto material2 = make_shared<lambertian>(color(0.4f, 0.7f, 0.1f));
     auto material3 = make_shared<metal>(color(0.7f, 0.6f, 0.5f), 0.0);
 
+    auto checkeredTex = make_shared<lambertian>(checker);
+    auto noise = make_shared<noiseTexture>(2);
+    auto perlinTex = make_shared<lambertian>(noise);
+
     world.add(make_shared<sphere>(point3(4, 1.0f, 0.5f), 1.0, material1));
     world.add(make_shared<sphere>(point3(2, 1.0f, -1.5f), 1.0, material2));
     world.add(make_shared<sphere>(point3(0, 1.0f, 2.5f), 1.0, material3));
+    
+    world.add(make_shared<sphere>(point3(5, 0.5f, -1.0f), 0.5, checkeredTex));
+    world.add(make_shared<sphere>(point3(5.5f, 0.5f, 0.0f), 0.5, perlinTex));
+    
     return world;
 }
 
