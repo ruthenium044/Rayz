@@ -1,10 +1,6 @@
 ﻿#pragma once
 #include <algorithm>
-#include <vector>
-
 #include "hittableList.h"
-#include "intersect.h"
-#include "utils.h"
 
 class hittableList;
 

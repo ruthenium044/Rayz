@@ -1,8 +1,4 @@
 ﻿#pragma once
-#include "hittable.h"
-#include "intersect.h"
-
-#include "vec3.h"
 
 class movingSphere : public hittable {
 public:
@@ -10,12 +6,11 @@ public:
     movingSphere(point3 cen0, point3 cen1, float tm0, float tm1, float r, std::shared_ptr<material> m)
             : center0(cen0), center1(cen1), time0(tm0), time1(tm1), radius(r), matPtr(m) {}
 
-    virtual bool hit(const ray& r, float tMin, float tMax, hitRecord& rec) const override;
-    virtual bool boundingBox(float time0, float time1, aabb& outputBox) const override;
+    bool hit(const ray& r, float tMin, float tMax, hitRecord& rec) const override;
+    bool boundingBox(float time0, float time1, aabb& outputBox) const override;
     
     point3 center(float t) const;
 
-public:
     point3 center0;
     point3 center1;
     float time0;

@@ -1,10 +1,5 @@
 ﻿#pragma once
 
-#include <cmath>
-#include <limits>
-#include <memory>
-#include <cstdlib>
-
 // Usings
 
 using std::shared_ptr;

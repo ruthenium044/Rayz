@@ -1,13 +1,7 @@
 ﻿#pragma once
 
 #include "hittable.h"
-
-#include <memory>
 #include <vector>
-
-#include "intersect.h"
-
-using namespace std;
 
 class hittableList : public hittable {
     public:
@@ -17,8 +11,8 @@ class hittableList : public hittable {
         void clear() { objects.clear(); }
         void add(shared_ptr<hittable> object) { objects.push_back(object); }
 
-        virtual bool hit( const ray& r, float t_min, float t_max, hitRecord& rec) const override;
-        virtual bool boundingBox(float time0, float time1, aabb& outputBox) const override;
+        bool hit( const ray& r, float t_min, float t_max, hitRecord& rec) const override;
+        bool boundingBox(float time0, float time1, aabb& outputBox) const override;
 
         std::vector<shared_ptr<hittable>> objects;
 };
@@ -39,7 +33,7 @@ inline bool hittableList::hit(const ray& r, float t_min, float t_max, hitRecord&
     return hit_anything;
 }
 
-bool hittableList::boundingBox(float time0, float time1, aabb& outputBox) const {
+inline bool hittableList::boundingBox(float time0, float time1, aabb& outputBox) const {
     if (objects.empty()) return false;
 
     aabb temp_box;

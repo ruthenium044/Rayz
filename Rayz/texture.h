@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "color.h"
-#include "perlin.h"
 
+#include "perlin.h"
+#include "stb_image.h"
 
 class texture {
 public:
@@ -57,4 +57,53 @@ public:
 
     perlin noise;
     float scale{};
+};
+
+class imageTexture : public texture {
+public:
+    const static int bytesPerPixel = 3;
+
+    imageTexture()
+      : data(nullptr), width(0), height(0), bytesPerScanline(0) {}
+
+    imageTexture(const char* filename) {
+        auto componentsPerPixel = bytesPerPixel;
+
+        data = stbi_load(filename, &width, &height, &componentsPerPixel, componentsPerPixel);
+
+        if (!data) {
+            std::cerr << "ERROR: Could not load texture image file '" << filename << "'.\n";
+            width = height = 0;
+        }
+
+        bytesPerScanline = bytesPerPixel * width;
+    }
+
+    ~imageTexture() {
+        delete data;
+    }
+
+    virtual color value(float u, float v, const vec3& p) const override {
+        if (data == nullptr)
+            return color(0,1,1);
+        
+        u = clamp(u, 0.0f, 1.0f);
+        v = 1.0f - clamp(v, 0.0f, 1.0f);
+
+        auto i = static_cast<int>(u * width);
+        auto j = static_cast<int>(v * height);
+
+        if (i >= width)  i = width-1;
+        if (j >= height) j = height-1;
+
+        const auto colorScale = 1.0f / 255.0f;
+        auto pixel = data + j*bytesPerScanline + i*bytesPerPixel;
+
+        return color(colorScale*pixel[0], colorScale*pixel[1], colorScale*pixel[2]);
+    }
+
+private:
+    unsigned char *data;
+    int width, height;
+    int bytesPerScanline;
 };

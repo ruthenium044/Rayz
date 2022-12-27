@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "ray.h"
 #include "vec3.h"
+#include "ray.h"
 
 class aabb {
 public:
@@ -44,18 +44,3 @@ inline aabb surroundingBox(aabb box0, aabb box1) {
 
     return aabb(small,big);
 }
-
-//inline bool aabb::hit(const ray& r, float tMin, float tMax) const {
-//    for (int i = 0; i < 3; ++i) {
-//        auto t0 = fmin((minimum[i] - r.origin()[i]) / r.direction()[i],
-//        (maximum[i] - r.origin()[i]) / r.direction()[i]);
-//        auto t1 = fmax((minimum[i] - r.origin()[i]) / r.direction()[i],
-//        (maximum[i] - r.origin()[i]) / r.direction()[i]);
-//        tMin = fmax(t0, tMax);
-//        tMax = fmin(t1, tMin);
-//        if (tMax <= tMin) {
-//            return false;
-//        }
-//    }
-//    return true;
-//}

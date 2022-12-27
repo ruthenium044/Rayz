@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include <cmath>
 #include <iostream>
+#include "utils.h"
 
 using std::sqrt;
 
@@ -13,6 +13,10 @@ class vec3 {
         float x() const { return e[0]; }
         float y() const { return e[1]; }
         float z() const { return e[2]; }
+
+        float& x() { return e[0]; }
+        float& y() { return e[1]; }
+        float& z() { return e[2]; }
     
         vec3 operator-() const { return vec3(-e[0], -e[1], -e[2]); }
         float operator[](int i) const { return e[i]; }
