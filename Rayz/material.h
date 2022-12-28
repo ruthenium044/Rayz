@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "hittable.h"
 #include "ray.h"
 #include "texture.h"
 
@@ -60,4 +61,18 @@ public:
     }
     
     shared_ptr<texture> emit;
+};
+
+class isotropic : public material {
+public:
+    isotropic(color c) : albedo(make_shared<solidColor>(c)) {}
+    isotropic(shared_ptr<texture> a) : albedo(a) {}
+
+    bool scatter(const ray& r_in, const hitRecord& rec, color& attenuation, ray& scattered) const override {
+        scattered = ray(rec.p, random_in_unit_sphere(), r_in.time());
+        attenuation = albedo->value(rec.u, rec.v, rec.p);
+        return true;
+    }
+
+    shared_ptr<texture> albedo;
 };

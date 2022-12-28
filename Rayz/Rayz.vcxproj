@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="constantMedium.cpp" />
     <ClCompile Include="hittable.cpp" />
     <ClCompile Include="material.cpp" />
     <ClCompile Include="Rayz.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="bvh.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="color.h" />
+    <ClInclude Include="constantMedium.h" />
     <ClInclude Include="hittable.h" />
     <ClInclude Include="aabb.h" />
     <ClInclude Include="material.h" />
