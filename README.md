@@ -1,7 +1,6 @@
 # Rayz
 
-Learning project, following https://raytracing.github.io/
-
+To learn more about graphics programming I have followed The Ray Tracing in One Weekend series of books (https://raytracing.github.io/) and made a small program that can render multiple primitive objects, different materials, lights, and volumes. My focus is to understand the basics of ray tracing and dive deeper into the math behind it while producing some cool images on the way. It is still an ongoing personal project that has taught me a lot so far and will teach me more in the future.
 
 ![image](https://user-images.githubusercontent.com/31730144/209981741-93b3c317-4353-4614-955a-91361ac2b8f5.jpg)
 
